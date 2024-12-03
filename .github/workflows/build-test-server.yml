@@ -31,8 +31,8 @@ jobs:
           context: '{{defaultContext}}:sc-server'
           push: false
           load: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sc_server:test
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sc_server
 
       - name: Run tests in Docker
         run: |
-          docker run --rm ${{ secrets.DOCKERHUB_USERNAME }}/sc_server:test /bin/sh -c "curl localhost:3000"
+          docker run --rm ${{ secrets.DOCKERHUB_USERNAME }}/sc_server /bin/sh -c "curl localhost:3000"

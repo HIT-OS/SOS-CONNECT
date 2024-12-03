@@ -51,10 +51,6 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/sc_server:latest
-            docker ps -aq --filter "name=^sc_server$" | xargs -r docker rm -f
-            docker run -d \
-              --name sc_server \
-              -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
-              -p 3000:3000 \
-              ${{ secrets.DOCKERHUB_USERNAME }}/sc_server:latest
+            cd /home/sos-connect/sc-server
+            docker compose down
+            docker compose up -d --build
