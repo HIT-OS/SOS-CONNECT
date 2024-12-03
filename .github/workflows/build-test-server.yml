@@ -22,9 +22,6 @@ jobs:
               - 'sc-server/**'
               - '.github/workflows/deployment.yml'
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
       - name: Build Docker image
         if: steps.filter.outputs.server == 'true'
         uses: docker/build-push-action@v6
