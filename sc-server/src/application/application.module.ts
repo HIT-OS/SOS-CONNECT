@@ -8,6 +8,7 @@ import { CommandHandlers } from './command';
 import { JwtConfigService } from '@src/infrastructure/services/jwt.config.service';
 import { InfrastructureModule } from '@src/infrastructure/infrastructure.module';
 import { QueryHandlers } from './queries';
+import { SendMailService } from '@src/domain/utils/send-mail.util';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { QueryHandlers } from './queries';
     HttpModule,
     InfrastructureModule,
   ],
-  providers: [...CommandHandlers, ...QueryHandlers],
+  providers: [...CommandHandlers, ...QueryHandlers, SendMailService],
   exports: [...CommandHandlers, ...QueryHandlers],
 })
 export class ApplicationModule {}
