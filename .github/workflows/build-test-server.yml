@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - main
-    paths: ['sc-server/**']
+    paths: ['sc-server/**', '.github/workflows/deployment.yml']
 
 jobs:
   build-and-test:
@@ -20,6 +20,7 @@ jobs:
           filters: |
             server:
               - 'sc-server/**'
+              - '.github/workflows/deployment.yml'
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2

@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - main
-    paths: ['sc-server/**']
+    paths: ['sc-server/**', '.github/workflows/deployment.yml']
   pull_request:
     branches:
       - main
     types: [closed]
-    paths: ['sc-server/**']
+    paths: ['sc-server/**', '.github/workflows/deployment.yml']
 
 jobs:
   build:
@@ -25,6 +25,7 @@ jobs:
           filters: |
             server:
               - 'sc-server/**'
+              - '.github/workflows/deployment.yml'
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
