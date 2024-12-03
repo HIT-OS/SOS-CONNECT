@@ -17,7 +17,20 @@ async function main() {
     update: user,
   });
 
-  console.log(userCreated);
+  const admin: Pick<User, 'email' | 'password' | 'username' | 'role'> = {
+    email: 'admin@gmail.com',
+    password: hashedPassword,
+    username: 'Admin SOS Connect',
+    role: 'ADMIN',
+  };
+
+  const adminCreated = await prisma.user.upsert({
+    where: { email: admin.email },
+    create: admin,
+    update: admin,
+  });
+
+  console.log({ userCreated, adminCreated });
 }
 
 main()
