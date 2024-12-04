@@ -7,7 +7,7 @@ on:
     paths: ['sc-server/**', '.github/workflows/docker-build.yml']
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,9 +32,9 @@ jobs:
           context: './sc-server'
           push: false
           load: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sc_server
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sc-server:test
 
       - name: Run docker container
         if: steps.filter.outputs.server == 'true'
         run: |
-          docker run -d --rm ${{ secrets.DOCKERHUB_USERNAME }}/sc_server
+          docker run -d --rm ${{ secrets.DOCKERHUB_USERNAME }}/sc-server:test
