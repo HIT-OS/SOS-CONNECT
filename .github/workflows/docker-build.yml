@@ -23,7 +23,7 @@ jobs:
               - '.github/workflows/docker-build.yml'
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
         if: steps.filter.outputs.server == 'true'
