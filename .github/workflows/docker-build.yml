@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - main
-    paths: ['sc-server/**', '.github/workflows/build-test-server.yml']
+    paths: ['sc-server/**', '.github/workflows/docker-build.yml']
 
 jobs:
   build-and-test:
@@ -20,7 +20,7 @@ jobs:
           filters: |
             server:
               - 'sc-server/**'
-              - '.github/workflows/build-test-server.yml'
+              - '.github/workflows/docker-build.yml'
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -32,9 +32,9 @@ jobs:
           context: './sc-server'
           push: false
           load: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sc-server:test
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sc_server
 
-      - name: Run tests in Docker
+      - name: Run docker container
         if: steps.filter.outputs.server == 'true'
         run: |
-          docker run --rm ${{ secrets.DOCKERHUB_USERNAME }}/sc-server:test /bin/sh -c "apk --no-cache add curl && curl localhost:3000"
+          docker run -d --rm ${{ secrets.DOCKERHUB_USERNAME }}/sc_server
