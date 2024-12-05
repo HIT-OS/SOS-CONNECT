@@ -1,27 +1,39 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import {
+  CanActivate,
+  ExecutionContext,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AppConstants } from '@src/common/constants';
 import { Request } from 'express';
+
+import { AppConstants } from '@src/common/constants';
+import { USER_REPOSITORY_TOKEN } from '@src/infrastructure/providers/user.repository.provider';
+import { IUserRepository } from '../repositories/user.repository.interface';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
+    @Inject(USER_REPOSITORY_TOKEN) private readonly userRepository: IUserRepository
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      throw new UnauthorizedException('Please login to continue!');
+      throw new UnauthorizedException('Vui lòng đăng nhập để tiếp tục');
     }
     try {
       const payload = await this.jwtService.verifyAsync(token);
-      request[AppConstants.Auth.USER_AUTH_KEY] = payload;
+      const user = await this.userRepository.getById(payload.id);
+      if (!user) {
+        throw new UnauthorizedException('Vui lòng đăng nhập để tiếp tục');
+      }
+      request[AppConstants.Auth.USER_AUTH_KEY] = user;
     } catch {
-      throw new UnauthorizedException('Please login to continue!');
+      throw new UnauthorizedException('Vui lòng đăng nhập để tiếp tục');
     }
     return true;
   }
