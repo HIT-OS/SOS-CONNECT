@@ -11,6 +11,10 @@ import { GetListResponseDto } from '@src/application/dto/response/get-list.dto';
 export class UserPrismaRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  updateById(userId: string, updateUserByDto: Partial<User>): Promise<User> {
+    return this.prisma.user.update({ where: { id: userId }, data: updateUserByDto });
+  }
+
   async getList(getListDto: GetListDto): Promise<GetListResponseDto> {
     const { limit, page, keyword } = getListDto;
 

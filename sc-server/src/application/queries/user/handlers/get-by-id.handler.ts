@@ -1,5 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 
 import { GetUserByIdQuery } from '../interfaces';
 import { IUserRepository } from '@src/domain/repositories/user.repository.interface';
@@ -15,6 +15,11 @@ export class GetUserByIdHandler implements IQueryHandler<GetUserByIdQuery> {
 
   async execute(query: GetUserByIdQuery): Promise<any> {
     const { userId } = query;
-    return this.userRepository.getById(userId);
+    const user = await this.userRepository.getById(userId);
+    if (!user) {
+      throw new BadRequestException('Không tìm thấy người dùng');
+    }
+    delete user.password;
+    return user;
   }
 }
