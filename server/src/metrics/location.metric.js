@@ -16,9 +16,18 @@ const sosLongitudeGauge = new client.Gauge({
   registers: [register]
 });
 
+// Gauge cho longitude
+const sosLocationGauge = new client.Gauge({
+  name: 'sos_location',
+  help: 'Location of the sos',
+  labelNames: ['name', 'phone', 'latitude', 'longitude'],
+  registers: [register]
+});
+
 function updateSosLocation({ name, phone, latitude, longitude }) {
   sosLatitudeGauge.labels({ name, phone }).set(Number(latitude));
   sosLongitudeGauge.labels({ name, phone }).set(Number(longitude));
+  sosLocationGauge.labels({ name, phone, latitude, longitude }).set(1);
 }
 
 module.exports = { updateSosLocation };
