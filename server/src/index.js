@@ -48,7 +48,8 @@ app.use('/metrics', async (_, res) => {
     res.set('Content-Type', register.contentType);
     res.end(await register.metrics());
   } catch (err) {
-    res.status(500).end(err);
+    logger.error('Exception occurred', err.stack);
+    res.status(500).end('An internal server error occurred');
   }
 });
 
