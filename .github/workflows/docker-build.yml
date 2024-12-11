@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - main
-    paths: ['sc-server/**', '.github/workflows/docker-build.yml']
+    paths: ['server/**', '.github/workflows/docker-build.yml']
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
         with:
           filters: |
             server:
-              - 'sc-server/**'
+              - 'server/**'
               - '.github/workflows/docker-build.yml'
 
       - name: Set up Docker Buildx
@@ -29,7 +29,7 @@ jobs:
         if: steps.filter.outputs.server == 'true'
         uses: docker/build-push-action@v6
         with:
-          context: './sc-server'
+          context: './server'
           push: false
           load: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/sc-server:test

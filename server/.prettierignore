@@ -1,0 +1,9 @@
+# Commonly ignored Node.js files
+node_modules
+npm-debug.log
+.npm
+
+logs
+
+prisma/migrations
+prisma/schema.prisma

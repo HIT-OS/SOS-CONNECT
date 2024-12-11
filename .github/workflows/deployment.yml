@@ -4,12 +4,7 @@ on:
   push:
     branches:
       - main
-    paths: ['sc-server/**', '.github/workflows/deployment.yml']
-  pull_request:
-    branches:
-      - main
-    types: [closed]
-    paths: ['sc-server/**', '.github/workflows/deployment.yml']
+    paths: ['server/**', '.github/workflows/deployment.yml']
 
 jobs:
   build:
@@ -24,7 +19,7 @@ jobs:
         with:
           filters: |
             server:
-              - 'sc-server/**'
+              - 'server/**'
               - '.github/workflows/deployment.yml'
 
       - name: Login to Docker Hub
@@ -37,9 +32,9 @@ jobs:
         if: steps.filter.outputs.server == 'true'
         uses: docker/build-push-action@v6
         with:
-          context: '{{defaultContext}}:sc-server'
+          context: '{{defaultContext}}:server'
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sc_server:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sc-server:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -53,5 +48,6 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            chmod +x /home/sos-connect/sc-server/deploy.sh
-            /home/sos-connect/sc-server/deploy.sh
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/sc-server:latest
+            docker rm -f sc-server || true
+            docker run -d --name sc-server -p 3000:3000 --restart always ${{ secrets.DOCKERHUB_USERNAME }}/sc-server:latest

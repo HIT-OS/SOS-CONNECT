@@ -1,0 +1,11 @@
+version: '3.5'
+
+services:
+  sc-server:
+    build:
+      context: .
+    image: sc-server:latest
+    container_name: sc-server
+    restart: always
+    ports:
+      - 3000:3000
