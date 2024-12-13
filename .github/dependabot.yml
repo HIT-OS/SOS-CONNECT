@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: '/sc-server'
+    directory: '/server'
     schedule:
       interval: daily
   - package-ecosystem: 'github-actions'
