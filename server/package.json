@@ -16,7 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "express-xss-sanitizer": "^1.2.1",
+    "express-xss-sanitizer": "^2.0.0",
     "helmet": "^8.0.0",
     "http-status": "^2.0.0",
     "joi": "^17.13.3",
